@@ -1,6 +1,6 @@
-## Graphback MongoDB + Apollo Server Template
+## Test Project for Walmart
 
-A template that provides you with an easy setup for your application's backend using MongoDB and Apollo server with TypeScript.
+Simple Project with CRUD.
 
 ### Quickstart Guide
 
@@ -83,4 +83,4 @@ A GraphQL schema describes the functionality available to the client application
 The next step is to use this schema to create the TypeScript types. [Codegen](https://graphql-code-generator.com/) is used in the `graphql codegen` command which generates this code from the GraphQL schema in the `generated-types.tsx` file. This makes sure that whenever you make changes to your data model you don't have to manually change the file because running `yarn generate` does that for you.
 
 ![Diagram explaining the process](readme-diagram.png)
-# walmart-test
+
