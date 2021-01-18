@@ -16,8 +16,30 @@ type Comment {
   description: String
 }
 
+""" @model """
+
+type Nutrition {
+  _id: GraphbackObjectID!
+  dessert: String
+  """
+  @oneToOne
+  """
+  nutirtionInfo: NutirtionInfo
+}
+
+""" @model """
+
+type NutirtionInfo {
+  _id: GraphbackObjectID!
+  calories: Int
+  fat: Int
+  carb: Int
+  protein: Int
+}
+
 type Query {
   getDraftNotes: [Note]
 }
+
 
 scalar GraphbackObjectID

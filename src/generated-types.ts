@@ -1,6 +1,8 @@
 /* eslint-disable */
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -59,6 +61,18 @@ export type CreateNoteInput = {
   description?: Maybe<Scalars['String']>;
 };
 
+export type CreateNutirtionInfoInput = {
+  calories?: Maybe<Scalars['Int']>;
+  fat?: Maybe<Scalars['Int']>;
+  carb?: Maybe<Scalars['Int']>;
+  protein?: Maybe<Scalars['Int']>;
+};
+
+export type CreateNutritionInput = {
+  dessert?: Maybe<Scalars['String']>;
+  nutirtionInfoId?: Maybe<Scalars['GraphbackObjectID']>;
+};
+
 
 export type GraphbackObjectIdInput = {
   ne?: Maybe<Scalars['GraphbackObjectID']>;
@@ -69,6 +83,17 @@ export type GraphbackObjectIdInput = {
   gt?: Maybe<Scalars['GraphbackObjectID']>;
   in?: Maybe<Array<Scalars['GraphbackObjectID']>>;
   between?: Maybe<Array<Scalars['GraphbackObjectID']>>;
+};
+
+export type IntInput = {
+  ne?: Maybe<Scalars['Int']>;
+  eq?: Maybe<Scalars['Int']>;
+  le?: Maybe<Scalars['Int']>;
+  lt?: Maybe<Scalars['Int']>;
+  ge?: Maybe<Scalars['Int']>;
+  gt?: Maybe<Scalars['Int']>;
+  in?: Maybe<Array<Scalars['Int']>>;
+  between?: Maybe<Array<Scalars['Int']>>;
 };
 
 export type MutateCommentInput = {
@@ -84,6 +109,20 @@ export type MutateNoteInput = {
   description?: Maybe<Scalars['String']>;
 };
 
+export type MutateNutirtionInfoInput = {
+  _id: Scalars['GraphbackObjectID'];
+  calories?: Maybe<Scalars['Int']>;
+  fat?: Maybe<Scalars['Int']>;
+  carb?: Maybe<Scalars['Int']>;
+  protein?: Maybe<Scalars['Int']>;
+};
+
+export type MutateNutritionInput = {
+  _id: Scalars['GraphbackObjectID'];
+  dessert?: Maybe<Scalars['String']>;
+  nutirtionInfoId?: Maybe<Scalars['GraphbackObjectID']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createNote?: Maybe<Note>;
@@ -92,6 +131,12 @@ export type Mutation = {
   createComment?: Maybe<Comment>;
   updateComment?: Maybe<Comment>;
   deleteComment?: Maybe<Comment>;
+  createNutrition?: Maybe<Nutrition>;
+  updateNutrition?: Maybe<Nutrition>;
+  deleteNutrition?: Maybe<Nutrition>;
+  createNutirtionInfo?: Maybe<NutirtionInfo>;
+  updateNutirtionInfo?: Maybe<NutirtionInfo>;
+  deleteNutirtionInfo?: Maybe<NutirtionInfo>;
 };
 
 
@@ -122,6 +167,36 @@ export type MutationUpdateCommentArgs = {
 
 export type MutationDeleteCommentArgs = {
   input: MutateCommentInput;
+};
+
+
+export type MutationCreateNutritionArgs = {
+  input: CreateNutritionInput;
+};
+
+
+export type MutationUpdateNutritionArgs = {
+  input: MutateNutritionInput;
+};
+
+
+export type MutationDeleteNutritionArgs = {
+  input: MutateNutritionInput;
+};
+
+
+export type MutationCreateNutirtionInfoArgs = {
+  input: CreateNutirtionInfoInput;
+};
+
+
+export type MutationUpdateNutirtionInfoArgs = {
+  input: MutateNutirtionInfoInput;
+};
+
+
+export type MutationDeleteNutirtionInfoArgs = {
+  input: MutateNutirtionInfoInput;
 };
 
 /**  @model  */
@@ -169,6 +244,83 @@ export type NoteSubscriptionFilter = {
   description?: Maybe<StringInput>;
 };
 
+/**  @model  */
+export type NutirtionInfo = {
+  __typename?: 'NutirtionInfo';
+  _id: Scalars['GraphbackObjectID'];
+  calories?: Maybe<Scalars['Int']>;
+  fat?: Maybe<Scalars['Int']>;
+  carb?: Maybe<Scalars['Int']>;
+  protein?: Maybe<Scalars['Int']>;
+};
+
+export type NutirtionInfoFilter = {
+  _id?: Maybe<GraphbackObjectIdInput>;
+  calories?: Maybe<IntInput>;
+  fat?: Maybe<IntInput>;
+  carb?: Maybe<IntInput>;
+  protein?: Maybe<IntInput>;
+  and?: Maybe<Array<NutirtionInfoFilter>>;
+  or?: Maybe<Array<NutirtionInfoFilter>>;
+  not?: Maybe<NutirtionInfoFilter>;
+};
+
+export type NutirtionInfoResultList = {
+  __typename?: 'NutirtionInfoResultList';
+  items: Array<Maybe<NutirtionInfo>>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+export type NutirtionInfoSubscriptionFilter = {
+  and?: Maybe<Array<NutirtionInfoSubscriptionFilter>>;
+  or?: Maybe<Array<NutirtionInfoSubscriptionFilter>>;
+  not?: Maybe<NutirtionInfoSubscriptionFilter>;
+  _id?: Maybe<GraphbackObjectIdInput>;
+  calories?: Maybe<IntInput>;
+  fat?: Maybe<IntInput>;
+  carb?: Maybe<IntInput>;
+  protein?: Maybe<IntInput>;
+};
+
+/**  @model  */
+export type Nutrition = {
+  __typename?: 'Nutrition';
+  _id: Scalars['GraphbackObjectID'];
+  dessert?: Maybe<Scalars['String']>;
+  /**
+   * @oneToOne(key: 'nutirtionInfoId')
+   * @oneToOne
+   */
+  nutirtionInfo?: Maybe<NutirtionInfo>;
+};
+
+export type NutritionFilter = {
+  _id?: Maybe<GraphbackObjectIdInput>;
+  dessert?: Maybe<StringInput>;
+  nutirtionInfoId?: Maybe<GraphbackObjectIdInput>;
+  and?: Maybe<Array<NutritionFilter>>;
+  or?: Maybe<Array<NutritionFilter>>;
+  not?: Maybe<NutritionFilter>;
+};
+
+export type NutritionResultList = {
+  __typename?: 'NutritionResultList';
+  items: Array<Maybe<Nutrition>>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  count?: Maybe<Scalars['Int']>;
+};
+
+export type NutritionSubscriptionFilter = {
+  and?: Maybe<Array<NutritionSubscriptionFilter>>;
+  or?: Maybe<Array<NutritionSubscriptionFilter>>;
+  not?: Maybe<NutritionSubscriptionFilter>;
+  _id?: Maybe<GraphbackObjectIdInput>;
+  dessert?: Maybe<StringInput>;
+};
+
 export type OrderByInput = {
   field: Scalars['String'];
   order?: Maybe<SortDirectionEnum>;
@@ -186,6 +338,10 @@ export type Query = {
   findNotes: NoteResultList;
   getComment?: Maybe<Comment>;
   findComments: CommentResultList;
+  getNutrition?: Maybe<Nutrition>;
+  findNutritions: NutritionResultList;
+  getNutirtionInfo?: Maybe<NutirtionInfo>;
+  findNutirtionInfos: NutirtionInfoResultList;
 };
 
 
@@ -208,6 +364,30 @@ export type QueryGetCommentArgs = {
 
 export type QueryFindCommentsArgs = {
   filter?: Maybe<CommentFilter>;
+  page?: Maybe<PageRequest>;
+  orderBy?: Maybe<OrderByInput>;
+};
+
+
+export type QueryGetNutritionArgs = {
+  id: Scalars['GraphbackObjectID'];
+};
+
+
+export type QueryFindNutritionsArgs = {
+  filter?: Maybe<NutritionFilter>;
+  page?: Maybe<PageRequest>;
+  orderBy?: Maybe<OrderByInput>;
+};
+
+
+export type QueryGetNutirtionInfoArgs = {
+  id: Scalars['GraphbackObjectID'];
+};
+
+
+export type QueryFindNutirtionInfosArgs = {
+  filter?: Maybe<NutirtionInfoFilter>;
   page?: Maybe<PageRequest>;
   orderBy?: Maybe<OrderByInput>;
 };
@@ -238,6 +418,12 @@ export type Subscription = {
   newComment: Comment;
   updatedComment: Comment;
   deletedComment: Comment;
+  newNutrition: Nutrition;
+  updatedNutrition: Nutrition;
+  deletedNutrition: Nutrition;
+  newNutirtionInfo: NutirtionInfo;
+  updatedNutirtionInfo: NutirtionInfo;
+  deletedNutirtionInfo: NutirtionInfo;
 };
 
 
@@ -268,4 +454,34 @@ export type SubscriptionUpdatedCommentArgs = {
 
 export type SubscriptionDeletedCommentArgs = {
   filter?: Maybe<CommentSubscriptionFilter>;
+};
+
+
+export type SubscriptionNewNutritionArgs = {
+  filter?: Maybe<NutritionSubscriptionFilter>;
+};
+
+
+export type SubscriptionUpdatedNutritionArgs = {
+  filter?: Maybe<NutritionSubscriptionFilter>;
+};
+
+
+export type SubscriptionDeletedNutritionArgs = {
+  filter?: Maybe<NutritionSubscriptionFilter>;
+};
+
+
+export type SubscriptionNewNutirtionInfoArgs = {
+  filter?: Maybe<NutirtionInfoSubscriptionFilter>;
+};
+
+
+export type SubscriptionUpdatedNutirtionInfoArgs = {
+  filter?: Maybe<NutirtionInfoSubscriptionFilter>;
+};
+
+
+export type SubscriptionDeletedNutirtionInfoArgs = {
+  filter?: Maybe<NutirtionInfoSubscriptionFilter>;
 };

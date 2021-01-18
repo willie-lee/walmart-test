@@ -53,6 +53,18 @@ input CreateNoteInput {
   description: String
 }
 
+input CreateNutirtionInfoInput {
+  calories: Int
+  fat: Int
+  carb: Int
+  protein: Int
+}
+
+input CreateNutritionInput {
+  dessert: String
+  nutirtionInfoId: GraphbackObjectID
+}
+
 scalar GraphbackObjectID
 
 input GraphbackObjectIDInput {
@@ -64,6 +76,17 @@ input GraphbackObjectIDInput {
   gt: GraphbackObjectID
   in: [GraphbackObjectID!]
   between: [GraphbackObjectID!]
+}
+
+input IntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  in: [Int!]
+  between: [Int!]
 }
 
 input MutateCommentInput {
@@ -79,6 +102,20 @@ input MutateNoteInput {
   description: String
 }
 
+input MutateNutirtionInfoInput {
+  _id: GraphbackObjectID!
+  calories: Int
+  fat: Int
+  carb: Int
+  protein: Int
+}
+
+input MutateNutritionInput {
+  _id: GraphbackObjectID!
+  dessert: String
+  nutirtionInfoId: GraphbackObjectID
+}
+
 type Mutation {
   createNote(input: CreateNoteInput!): Note
   updateNote(input: MutateNoteInput!): Note
@@ -86,6 +123,12 @@ type Mutation {
   createComment(input: CreateCommentInput!): Comment
   updateComment(input: MutateCommentInput!): Comment
   deleteComment(input: MutateCommentInput!): Comment
+  createNutrition(input: CreateNutritionInput!): Nutrition
+  updateNutrition(input: MutateNutritionInput!): Nutrition
+  deleteNutrition(input: MutateNutritionInput!): Nutrition
+  createNutirtionInfo(input: CreateNutirtionInfoInput!): NutirtionInfo
+  updateNutirtionInfo(input: MutateNutirtionInfoInput!): NutirtionInfo
+  deleteNutirtionInfo(input: MutateNutirtionInfoInput!): NutirtionInfo
 }
 
 """ @model """
@@ -126,6 +169,80 @@ input NoteSubscriptionFilter {
   description: StringInput
 }
 
+""" @model """
+type NutirtionInfo {
+  _id: GraphbackObjectID!
+  calories: Int
+  fat: Int
+  carb: Int
+  protein: Int
+}
+
+input NutirtionInfoFilter {
+  _id: GraphbackObjectIDInput
+  calories: IntInput
+  fat: IntInput
+  carb: IntInput
+  protein: IntInput
+  and: [NutirtionInfoFilter!]
+  or: [NutirtionInfoFilter!]
+  not: NutirtionInfoFilter
+}
+
+type NutirtionInfoResultList {
+  items: [NutirtionInfo]!
+  offset: Int
+  limit: Int
+  count: Int
+}
+
+input NutirtionInfoSubscriptionFilter {
+  and: [NutirtionInfoSubscriptionFilter!]
+  or: [NutirtionInfoSubscriptionFilter!]
+  not: NutirtionInfoSubscriptionFilter
+  _id: GraphbackObjectIDInput
+  calories: IntInput
+  fat: IntInput
+  carb: IntInput
+  protein: IntInput
+}
+
+""" @model """
+type Nutrition {
+  _id: GraphbackObjectID!
+  dessert: String
+
+  """
+  @oneToOne(key: 'nutirtionInfoId')
+  @oneToOne
+  """
+  nutirtionInfo: NutirtionInfo
+}
+
+input NutritionFilter {
+  _id: GraphbackObjectIDInput
+  dessert: StringInput
+  nutirtionInfoId: GraphbackObjectIDInput
+  and: [NutritionFilter!]
+  or: [NutritionFilter!]
+  not: NutritionFilter
+}
+
+type NutritionResultList {
+  items: [Nutrition]!
+  offset: Int
+  limit: Int
+  count: Int
+}
+
+input NutritionSubscriptionFilter {
+  and: [NutritionSubscriptionFilter!]
+  or: [NutritionSubscriptionFilter!]
+  not: NutritionSubscriptionFilter
+  _id: GraphbackObjectIDInput
+  dessert: StringInput
+}
+
 input OrderByInput {
   field: String!
   order: SortDirectionEnum = ASC
@@ -142,6 +259,10 @@ type Query {
   findNotes(filter: NoteFilter, page: PageRequest, orderBy: OrderByInput): NoteResultList!
   getComment(id: GraphbackObjectID!): Comment
   findComments(filter: CommentFilter, page: PageRequest, orderBy: OrderByInput): CommentResultList!
+  getNutrition(id: GraphbackObjectID!): Nutrition
+  findNutritions(filter: NutritionFilter, page: PageRequest, orderBy: OrderByInput): NutritionResultList!
+  getNutirtionInfo(id: GraphbackObjectID!): NutirtionInfo
+  findNutirtionInfos(filter: NutirtionInfoFilter, page: PageRequest, orderBy: OrderByInput): NutirtionInfoResultList!
 }
 
 enum SortDirectionEnum {
@@ -169,4 +290,10 @@ type Subscription {
   newComment(filter: CommentSubscriptionFilter): Comment!
   updatedComment(filter: CommentSubscriptionFilter): Comment!
   deletedComment(filter: CommentSubscriptionFilter): Comment!
+  newNutrition(filter: NutritionSubscriptionFilter): Nutrition!
+  updatedNutrition(filter: NutritionSubscriptionFilter): Nutrition!
+  deletedNutrition(filter: NutritionSubscriptionFilter): Nutrition!
+  newNutirtionInfo(filter: NutirtionInfoSubscriptionFilter): NutirtionInfo!
+  updatedNutirtionInfo(filter: NutirtionInfoSubscriptionFilter): NutirtionInfo!
+  deletedNutirtionInfo(filter: NutirtionInfoSubscriptionFilter): NutirtionInfo!
 }
